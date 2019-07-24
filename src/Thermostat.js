@@ -20,14 +20,14 @@ Thermostat.prototype.isPowerSavingMode = function() {
 Thermostat.prototype.isMinimumTemperature = function() {
   return this.temperature === this.MINIMUM_TEMPERATURE;
 };
-Thermostat.prototype.isMaximumTemperature = function() {
+Thermostat.prototype.MaximumTemperature = function() {
   if(this.isPowerSavingMode()) {
-    return this.temperature === this.POWER_SAVING_MODE_MAXIMUM_TEMPERATURE;
+    return this.POWER_SAVING_MODE_MAXIMUM_TEMPERATURE;
   };
-  return this.temperature === this.MAXIMUM_TEMPERATURE;
+  return this.MAXIMUM_TEMPERATURE;
 };
 Thermostat.prototype.up = function() {
-  if(this.isMaximumTemperature())  {
+  if(this.getCurrentTemperature() >= this.MaximumTemperature())  {
     throw new Error('Error: Cannot raise thermostat above maximum temperature.');
   };
   this.temperature += 1;
