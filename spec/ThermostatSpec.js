@@ -8,7 +8,7 @@ describe('Thermostat', function(){
     thermostat = new Thermostat();
   });
 
-  it('starts at 20 degress', function() {
+  it('starts at 20 degrees', function() {
     expect(thermostat.getCurrentTemperature()).toEqual(20);
   });
   it('can increase temperature by 1 degree', function() {
@@ -29,6 +29,11 @@ describe('Thermostat', function(){
   it('starts in power-saving-mode', function() {
     expect(thermostat.isPowerSavingMode()).toBe(true);
   });
+  it('can reset temperature to 20 degrees', function() {
+    thermostat.up();
+    thermostat.reset();
+    expect(thermostat.getCurrentTemperature()).toEqual(20);
+  });
 
   describe('when power-saving-mode is on', function() {
     it('can toggle off power-saving-mode', function() {
@@ -44,7 +49,7 @@ describe('Thermostat', function(){
       expect(function(){ thermostat.up(); }).toThrowError('Error: Cannot raise thermostat above maximum temperature.');
     });
   });
-  
+
   describe('when power-saving-mode if off', function(){
     beforeEach(function() {
       thermostat.togglePowerSavingMode();
@@ -60,6 +65,42 @@ describe('Thermostat', function(){
       }
       expect(thermostat.getCurrentTemperature()).toEqual(32);
       expect(function(){ thermostat.up(); }).toThrowError('Error: Cannot raise thermostat above maximum temperature.');
+    });
+  });
+
+  describe('displaying energy usage', function() {
+    describe('when the temperature is below 18', function() {
+      it('returns low-usage', function() {
+        for (var i = 1; i <= 3; i++) {
+          thermostat.down();
+        }
+        expect(thermostat.getCurrentTemperature()).toEqual(17);
+        expect(thermostat.reportEnergyUsage()).toEqual('low-usage');
+      });
+    });
+    describe('when the temperature is between 18 and 24', function() {
+      it('returns medium-usage', function() {
+        for (var i = 1; i <= 2; i++) {
+          thermostat.down();
+        }
+        expect(thermostat.getCurrentTemperature()).toEqual(18);
+        expect(thermostat.reportEnergyUsage()).toEqual('medium-usage');
+        thermostat.reset();
+        for (var i = 1; i <= 4; i++) {
+          thermostat.up();
+        }
+        expect(thermostat.getCurrentTemperature()).toEqual(24);
+        expect(thermostat.reportEnergyUsage()).toEqual('medium-usage');
+      });
+    });
+    describe('when the temperature is above 24', function() {
+      it('returns high-usage', function() {
+        for (var i = 1; i <= 5; i++) {
+          thermostat.up();
+        }
+        expect(thermostat.getCurrentTemperature()).toEqual(25);
+        expect(thermostat.reportEnergyUsage()).toEqual('high-usage');
+      });
     });
   });
 });
