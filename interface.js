@@ -19,24 +19,34 @@ $(document).ready(function() {
 
   $('#power-saving-mode-toggle').click(function() {
     thermostat.togglePowerSavingMode();
-    $('#power-saving').text('off')
+    $('#power-saving-status').text(thermostat.isPowerSavingMode())
     updateTemperature();
   })
 
-  // $('#psm-on').click(function() {
-  //   thermostat.powerSavingModeOn();
-  //   $('#power-saving').text('on')
-  //   updateTemperature();
-  // })
+  displayWeather('London');
 
-  // $('#psm-off').click(function() {
-  //   thermostat.powerSavingModeOff();
-  //   $('#power-saving').text('off')
-  //   updateTemperature();
-  // })
+  $('#select-city').submit(function(event) {
+    event.preventDefault();
+    var city = $('#current-city').val();
+    displayWeather(city);
+  })
+
+  $('#current-city').change(function() {
+    var city = $('#current-city').val();
+    displayWeather(city);
+  })
 
   function updateTemperature() {
     $('#temperature').text(thermostat.getCurrentTemperature());
-    // $('#temperature').attr('class', thermostat.energyUsage());
+    $('#temperature').attr('class', thermostat.reportEnergyUsage());
   };
+
+  function displayWeather(city) {
+    var url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city;
+    var token = '&appid=021a6286c1dbd4a86a423a04d080bced';
+    var units = '&units=metric';
+    $.get(url + token + units, function(data) {
+      $('#current-temperature').text(data.main.temp);
+    })
+  }
 });

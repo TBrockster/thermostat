@@ -1,18 +1,26 @@
 <!DOCTYPE html>
 <html>
+  <link rel="stylesheet" href="public/style.css">
   <head>
     <title>Thermostat</title>
   </head>
   <body>
+    <section>
+        <h1>Current temperature: <span id="current-temperature"></span></h1>
+        <select id="current-city">
+            <option value="london">London</option>
+            <option value="New York,US">New York</option>
+            <option value="Paris">Paris</option>
+            <option value="Tokyo">Tokyo</option>
+          </select>
+    </section>
     <section>
       <h1 id="temperature"></h1>
       <p>
         <button id="temperature-up">+</button>
         <button id="temperature-down">-</button>
         <button id="temperature-reset">reset</button>
-        power saving mode is <span id="power-saving-status">on</span>
-        <button id="powersaving-on">PSM on</button>
-        <button id="powersaving-off">PSM off</button>
+        power saving mode is <span id="power-saving-status">true</span>
         <button id="power-saving-mode-toggle">Toggle PSM</button>
       </p>
     </section>
